@@ -16,12 +16,14 @@ namespace Game
 
 		private IEnumerator SpawnEnemy()
 		{
+			WaitForSeconds waitForSeconds = new WaitForSeconds(_spawnSecondsDeley);
+
 			for (int i = 0; i < _enemyCount; i++)
 			{
 				int spawnerIndex = Random.Range(0, _enemySpawners.Length);
 				_enemySpawners[spawnerIndex].Spawn();
 
-				yield return new WaitForSeconds(_spawnSecondsDeley);
+				yield return waitForSeconds;
 			}
 		}
 	}
