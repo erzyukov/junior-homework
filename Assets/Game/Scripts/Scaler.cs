@@ -1,15 +1,17 @@
 using UnityEngine;
+using DG.Tweening;
 
 namespace Game
 {
 	public class Scaler : MonoBehaviour
 	{
-		[SerializeField] private float _increaseSpeed;
+		[SerializeField] private float _targetScale;
+		[SerializeField] private float _speed;
 
-		private void Update()
+		private void Start()
 		{
-			Vector3 scalingIncrement = Vector3.one * _increaseSpeed * Time.deltaTime;
-			transform.localScale += scalingIncrement;
+			float time = (_targetScale - transform.localScale.x) / _speed;
+			transform.DOScale(_targetScale, time).SetEase(Ease.OutElastic).SetLoops(-1, LoopType.Restart);
 		}
 	}
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 namespace Game
 {
@@ -7,10 +8,11 @@ namespace Game
 		[SerializeField] private float _speed;
 		[SerializeField] private Transform _targetPoint;
 
-		private void Update()
+		private void Start()
 		{
-			Vector3 movingIncrement = transform.forward * _speed * Time.deltaTime;
-			transform.Translate(movingIncrement, Space.World);
+			float distance = (_targetPoint.position - transform.position).magnitude;
+			float time = distance / _speed;
+			transform.DOMove(_targetPoint.position, time).SetEase(Ease.OutBounce).SetLoops(-1, LoopType.Yoyo);
 		}
 	}
 }
