@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Game
 {
@@ -12,8 +9,26 @@ namespace Game
 		private int _targetIndex;
 		private Vector3[] _path;
 
-        void Start()
+		private void Start()
         {
+			FillPath();
+		}
+
+		private void Update()
+        {
+			if (transform.position == _path[_targetIndex])
+			{
+				_targetIndex++;
+				
+				if (_targetIndex >= _path.Length)
+					_targetIndex = 0;
+			}
+			
+			transform.position = Vector3.MoveTowards(transform.position, _path[_targetIndex], _speed * Time.deltaTime);
+		}
+
+		private void FillPath()
+		{
 			_path = new Vector3[2];
 
 			int index = 0;
@@ -26,17 +41,5 @@ namespace Game
 
 			_targetIndex = index;
 		}
-		void Update()
-        {
-			if (transform.position == _path[_targetIndex])
-			{
-				_targetIndex++;
-				
-				if (_targetIndex >= _path.Length)
-					_targetIndex = 0;
-			}
-			
-			transform.position = Vector3.MoveTowards(transform.position, _path[_targetIndex], _speed * Time.deltaTime);
-		}
-    }
+	}
 }
