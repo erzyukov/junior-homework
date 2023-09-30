@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class SpawnerManager : MonoBehaviour
+    public class SpawnersController : MonoBehaviour
     {
 		[SerializeField] private int _enemyCount;
 		[SerializeField] private float _spawnSecondsDeley;
