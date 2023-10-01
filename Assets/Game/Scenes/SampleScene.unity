@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 356210796}
   - component: {fileID: 356210797}
   m_Layer: 0
-  m_Name: Bootstrap
+  m_Name: Hero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthAmount: 120
-  OnHealthRateChange:
+  HealthRateChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2085081745}

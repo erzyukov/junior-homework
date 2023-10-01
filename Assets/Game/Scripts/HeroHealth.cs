@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace Game
 {
-    public class HeroHealthController : MonoBehaviour
+    public class HeroHealth : MonoBehaviour
     {
 		[SerializeField] private int _healthAmount;
 
@@ -12,21 +12,21 @@ namespace Game
 		private void Start()
 		{
 			_hero = new Hero(_healthAmount);
-			OnHealthRateChange.Invoke(_hero.HealthRate);
+			HealthRateChanged.Invoke(_hero.HealthRate);
 		}
 
-		public UnityEvent<float> OnHealthRateChange;
+		public UnityEvent<float> HealthRateChanged;
 
 		public void Hit(int damageSize)
 		{
 			_hero.TakeDamage(damageSize);
-			OnHealthRateChange.Invoke(_hero.HealthRate);
+			HealthRateChanged.Invoke(_hero.HealthRate);
 		}
 
 		public void Heal(int amount)
 		{
 			_hero.Heal(amount);
-			OnHealthRateChange.Invoke(_hero.HealthRate);
+			HealthRateChanged.Invoke(_hero.HealthRate);
 		}
 	}
 }
