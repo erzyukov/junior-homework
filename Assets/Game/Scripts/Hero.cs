@@ -13,8 +13,7 @@ namespace Game
 			_maxHealth = health;
 		}
 
-		public int MaxHealth => _maxHealth;
-		public int Health => _health;
+		public float HealthRate => (float)_health / _maxHealth;
 
 		public void Heal(int amount) =>
 			_health = Mathf.Min(_health + amount, _maxHealth);

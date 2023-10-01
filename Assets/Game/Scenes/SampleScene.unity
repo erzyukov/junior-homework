@@ -168,13 +168,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthAmount: 120
-  _maxDisplayHealthChangeDelta: 0.002
   OnHealthRateChange:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2085081744}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Slider, UnityEngine.UI
-        m_MethodName: set_value
+      - m_Target: {fileID: 2085081745}
+        m_TargetAssemblyTypeName: Game.HeroHealthView, Assembly-CSharp
+        m_MethodName: SetHealthRate
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1289,6 +1288,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2085081743}
   - component: {fileID: 2085081744}
+  - component: {fileID: 2085081745}
   m_Layer: 5
   m_Name: HeroHealth
   m_TagString: Untagged
@@ -1370,6 +1370,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2085081745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2085081742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b1bdf1de0a54f04b86e7f68179a8eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxDisplayHealthChangeDelta: 0.002
 --- !u!1 &2096275320
 GameObject:
   m_ObjectHideFlags: 0
