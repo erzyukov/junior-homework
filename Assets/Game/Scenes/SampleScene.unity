@@ -168,21 +168,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthAmount: 120
-  HealthRateChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2085081745}
-        m_TargetAssemblyTypeName: Game.HeroHealthView, Assembly-CSharp
-        m_MethodName: SetHealthRate
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &357154843
 GameObject:
   m_ObjectHideFlags: 0
@@ -1383,6 +1368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxDisplayHealthChangeDelta: 0.002
+  _heroHealth: {fileID: 356210797}
 --- !u!1 &2096275320
 GameObject:
   m_ObjectHideFlags: 0

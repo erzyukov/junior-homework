@@ -12,21 +12,21 @@ namespace Game
 		private void Start()
 		{
 			_hero = new Hero(_healthAmount);
-			HealthRateChanged.Invoke(_hero.HealthRate);
+			HealthRateChanged?.Invoke(_hero.HealthRate);
 		}
 
-		public UnityEvent<float> HealthRateChanged;
+		public event UnityAction<float> HealthRateChanged;
 
 		public void Hit(int damageSize)
 		{
 			_hero.TakeDamage(damageSize);
-			HealthRateChanged.Invoke(_hero.HealthRate);
+			HealthRateChanged?.Invoke(_hero.HealthRate);
 		}
 
 		public void Heal(int amount)
 		{
 			_hero.Heal(amount);
-			HealthRateChanged.Invoke(_hero.HealthRate);
+			HealthRateChanged?.Invoke(_hero.HealthRate);
 		}
 	}
 }

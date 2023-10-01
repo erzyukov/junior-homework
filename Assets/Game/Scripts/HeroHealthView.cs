@@ -8,16 +8,23 @@ namespace Game
 	public class HeroHealthView : MonoBehaviour
     {
 		[SerializeField] private float _maxDisplayHealthChangeDelta;
+		[SerializeField] private HeroHealth _heroHealth;
 
 		private Coroutine _healthRateAnimator;
 		private Slider _slider;
 
-		private void Start()
+		private void Awake()
 		{
 			_slider = GetComponent<Slider>();
+			_heroHealth.HealthRateChanged += SetHealthRate;
 		}
 
-		public void SetHealthRate(float healthRate)
+		private void OnDestroy()
+		{
+			_heroHealth.HealthRateChanged -= SetHealthRate;
+		}
+
+		private void SetHealthRate(float healthRate)
 		{
 			if (_healthRateAnimator != null)
 				StopCoroutine(_healthRateAnimator);
