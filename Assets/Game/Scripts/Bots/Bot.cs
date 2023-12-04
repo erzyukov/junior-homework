@@ -1,6 +1,7 @@
 namespace Game
 {
 	using UnityEngine;
+	using UnityEngine.Events;
 
 	[RequireComponent(typeof(BotMover))]
     public class Bot : MonoBehaviour
@@ -19,12 +20,16 @@ namespace Game
 			_oreContainer = GetComponent<BotOreContainer>();
 
 			_oreContainer.OreGathered += OnOreGatheredHandler;
+
+			Freed?.Invoke(this);
 		}
 
 		private void OnDestroy()
 		{
 			_oreContainer.OreGathered -= OnOreGatheredHandler;
 		}
+
+		public event UnityAction<Bot> Freed;
 
 		public enum State
 		{
@@ -46,8 +51,15 @@ namespace Game
 
 		public Ore HandOverOre()
 		{
+			Ore ore = _oreContainer.HandOverOre();
+			ore.transform.SetParent(null);
+			return ore;
+		}
+
+		public void SetFree()
+		{
 			_state = State.Free;
-			return _oreContainer.HandOverOre();
+			Freed?.Invoke(this);
 		}
 
 		private void OnOreGatheredHandler(Ore ore)

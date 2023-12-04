@@ -11,7 +11,7 @@ namespace Game
 
 		private void OnTriggerEnter(Collider other)
 		{
-			if (other.TryGetComponent<Ore>(out Ore ore) && ore == _target)
+			if (other.transform.parent.TryGetComponent<Ore>(out Ore ore) && ore == _target)
 				TakeOre(ore);
 		}
 

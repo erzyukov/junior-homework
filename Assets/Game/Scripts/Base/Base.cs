@@ -1,8 +1,5 @@
 namespace Game
 {
-	using System.Collections;
-	using System.Collections.Generic;
-	using System.Linq;
 	using UnityEngine;
 
 	[RequireComponent(typeof(BaseBots))]
@@ -11,55 +8,40 @@ namespace Game
 		[SerializeField] private float _scanInterval;
 
 		private OreSpawner _oreSpawner;
-		private List<Ore> _gatheringOres;
 
 		private BaseBots _baseBots;
-		private BaseWarehouse _baseWarehouse;
 
 		private void Start()
         {
-			_gatheringOres = new List<Ore>();
-
 			_oreSpawner = FindObjectOfType<OreSpawner>();
 			_baseBots = GetComponent<BaseBots>();
-			_baseWarehouse = GetComponentInChildren<BaseWarehouse>();
 
-			_baseWarehouse.OreConsumed += OnOreConsumedHandler;
-
-			StartCoroutine(SearchOres());
+			_baseBots.BotFreed += OnBotFreedHandler;
+			_oreSpawner.Spawned += OnOreSpawnedHandler;
 		}
 
 		private void OnDestroy()
 		{
-			_baseWarehouse.OreConsumed -= OnOreConsumedHandler;
+			_baseBots.BotFreed -= OnBotFreedHandler;
+			_oreSpawner.Spawned -= OnOreSpawnedHandler;
 		}
 
-		private IEnumerator SearchOres()
+		private void OnBotFreedHandler(Bot bot)
 		{
-			WaitForSeconds waitForSeconds = new WaitForSeconds(_scanInterval);
+			if (_oreSpawner.TryGetOre(out Ore ore))
+				bot.StartGather(ore);
+		}
 
-			while (Application.isPlaying)
+		private void OnOreSpawnedHandler()
+		{
+			if (_baseBots.HasFreeBots == false)
+				return;
+
+			if (_oreSpawner.TryGetOre(out Ore ore))
 			{
-				yield return new WaitUntil(() => _baseBots.HasFreeBots);
-
-				Ore founded = _oreSpawner.Ores
-					.Where(ore => _gatheringOres.Contains(ore) == false && ore.IsGathering == false)
-					.FirstOrDefault();
-
-				if (founded != null)
-				{
-					Bot bot = _baseBots.GetFreeBot();
-					bot.StartGather(founded);
-					founded.IsGathering = true;
-				}
-
-				yield return waitForSeconds;
+				Bot bot = _baseBots.GetFreeBot();
+				bot.StartGather(ore);
 			}
-		}
-
-		private void OnOreConsumedHandler(Ore ore)
-		{
-			_oreSpawner.Remove(ore);
 		}
 	}
 }

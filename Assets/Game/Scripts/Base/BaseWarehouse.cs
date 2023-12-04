@@ -2,7 +2,6 @@ namespace Game
 {
 	using UnityEngine;
 	using TMPro;
-	using UnityEngine.Events;
 
     public class BaseWarehouse : MonoBehaviour
     {
@@ -12,17 +11,16 @@ namespace Game
 
 		private void OnTriggerEnter(Collider other)
 		{
-			if (other.TryGetComponent<Bot>(out Bot bot) && bot.HasOre)
+			if (other.transform.parent.TryGetComponent<Bot>(out Bot bot) && bot.HasOre)
 			{
 				Ore ore = bot.HandOverOre();
-				OreConsumed?.Invoke(ore);
 				Destroy(ore.gameObject);
 
 				_oreCount++;
 				_oreCountText.text = _oreCount.ToString();
+				
+				bot.SetFree();
 			}
 		}
-
-		public event UnityAction<Ore> OreConsumed;
 	}
 }

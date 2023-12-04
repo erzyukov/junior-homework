@@ -630,6 +630,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bot (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7232736620886252647, guid: e0c44c2b40c44174eb2c626cc9d45d96, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7232736620886252666, guid: e0c44c2b40c44174eb2c626cc9d45d96, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -911,6 +915,10 @@ PrefabInstance:
     - target: {fileID: 7232736620886252647, guid: e0c44c2b40c44174eb2c626cc9d45d96, type: 3}
       propertyPath: m_Name
       value: Bot (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7232736620886252647, guid: e0c44c2b40c44174eb2c626cc9d45d96, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7232736620886252666, guid: e0c44c2b40c44174eb2c626cc9d45d96, type: 3}
       propertyPath: m_Materials.Array.data[0]

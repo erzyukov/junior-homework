@@ -3,6 +3,7 @@ namespace Game
 	using System.Collections;
 	using System.Collections.Generic;
 	using UnityEngine;
+	using UnityEngine.Events;
 
 	[RequireComponent(typeof(BoxCollider))]
     public class OreSpawner : MonoBehaviour
@@ -11,17 +12,29 @@ namespace Game
 		[SerializeField] private float _spawnSecondsDelay;
 		[SerializeField] private int _maxOreOnField;
 
-		private List<Ore> _ores;
+		private Queue<Ore> _ores;
 		private Bounds _bounds;
 
 		private void Start()
 		{
-			_ores = new List<Ore>();
+			_ores = new Queue<Ore>();
 			_bounds = GetComponent<BoxCollider>().bounds;
 			StartCoroutine(SpawnOre());
 		}
 
-		public List<Ore> Ores => _ores;
+		public event UnityAction Spawned;
+		
+		public bool TryGetOre(out Ore ore)
+		{
+			ore = null;
+
+			if (_ores.Count == 0)
+				return false;
+
+			ore = _ores.Dequeue();
+
+			return true;
+		}
 
 		private IEnumerator SpawnOre()
 		{
@@ -34,7 +47,8 @@ namespace Game
 
 				Vector3 position = GetRandomPosition();
 				Ore ore = Instantiate(_orePrefab, position, Quaternion.identity, transform);
-				_ores.Add(ore);
+				_ores.Enqueue(ore);
+				Spawned?.Invoke();
 			}
 		}
 
@@ -48,8 +62,5 @@ namespace Game
 
 			return _bounds.ClosestPoint(randomPositionInside);
 		}
-
-		public void Remove(Ore ore) =>
-			_ores.Remove(ore);
 	}
 }
