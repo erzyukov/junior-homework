@@ -1284,6 +1284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scanInterval: 2
+  _oreSpawner: {fileID: 306549472}
 --- !u!1001 &7232736619805377290
 PrefabInstance:
   m_ObjectHideFlags: 0
