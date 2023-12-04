@@ -12,9 +12,7 @@ namespace Game
 
 		private void OnTriggerEnter(Collider other)
 		{
-			Bot bot = other.GetComponentInParent<Bot>();
-
-			if (bot != null && bot.HasOre)
+			if (other.TryGetComponent<Bot>(out Bot bot) && bot.HasOre)
 			{
 				Ore ore = bot.HandOverOre();
 				OreConsumed?.Invoke(ore);
