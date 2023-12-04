@@ -13,7 +13,7 @@ namespace Game
 
 		private void Start()
 		{
-			_startPoint = new GameObject("StartMark").GetComponent<Transform>();
+			_startPoint = new GameObject("StartMark").transform;
 			_startPoint.position = transform.position;
 
 			_mover = GetComponent<BotMover>();

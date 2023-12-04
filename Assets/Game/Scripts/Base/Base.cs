@@ -6,14 +6,12 @@ namespace Game
     public class Base : MonoBehaviour
     {
 		[SerializeField] private float _scanInterval;
-
-		private OreSpawner _oreSpawner;
+		[SerializeField] private OreSpawner _oreSpawner;
 
 		private BaseBots _baseBots;
 
 		private void Start()
         {
-			_oreSpawner = FindObjectOfType<OreSpawner>();
 			_baseBots = GetComponent<BaseBots>();
 
 			_baseBots.BotFreed += OnBotFreedHandler;
