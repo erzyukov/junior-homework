@@ -3,7 +3,6 @@ namespace Game
 	using System;
 	using UnityEngine;
 	using UnityEngine.Events;
-	using UnityEngine.UIElements;
 
 	[RequireComponent(typeof(BotMover))]
     public class Bot : MonoBehaviour
@@ -72,6 +71,7 @@ namespace Game
 		{
 			Ore ore = _oreContainer.HandOverOre();
 			ore.transform.SetParent(null);
+
 			return ore;
 		}
 

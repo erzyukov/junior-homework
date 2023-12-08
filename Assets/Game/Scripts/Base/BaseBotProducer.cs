@@ -1,10 +1,9 @@
 namespace Game
 {
-	using System;
 	using UnityEngine;
 
 	[RequireComponent(typeof(BaseBots))]
-    public class BotProducer : MonoBehaviour
+    public class BaseBotProducer : MonoBehaviour
     {
 		[SerializeField] private int _botPrice;
 		[SerializeField] private int _maxCount;
@@ -35,6 +34,7 @@ namespace Game
 		public void InitBase(int botCount, Color baseColor)
 		{
 			_baseColor = baseColor;
+			
 			for (int i = 0; i < botCount; i++)
 				ProduceBot();
 		}

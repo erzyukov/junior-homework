@@ -5,7 +5,7 @@ namespace Game
     public class BaseFacade : MonoBehaviour
     {
 		private Base _base;
-		private BotProducer _botProducer;
+		private BaseBotProducer _botProducer;
 		private BaseExpander _baseExpander;
 		private BaseBots _baseBots;
 		private Color _baseColor;
@@ -13,7 +13,7 @@ namespace Game
 		private void Awake()
 		{
 			_base = GetComponent<Base>();
-			_botProducer = GetComponent<BotProducer>();
+			_botProducer = GetComponent<BaseBotProducer>();
 			_baseExpander = GetComponent<BaseExpander>();
 			_baseBots = GetComponent<BaseBots>();
 			_baseColor = Random.ColorHSV();

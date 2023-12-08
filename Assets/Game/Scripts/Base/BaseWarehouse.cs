@@ -38,12 +38,11 @@ namespace Game
 
 			_oreCount -= amount;
 			UpdateUi();
+
 			return true;
 		}
 
-		public void UpdateUi()
-		{
+		public void UpdateUi() =>
 			_oreCountText.text = _oreCount.ToString();
-		}
 	}
 }

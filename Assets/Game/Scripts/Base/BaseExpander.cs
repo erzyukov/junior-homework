@@ -1,6 +1,5 @@
 namespace Game
 {
-	using System;
 	using UnityEngine;
 	using UnityEngine.EventSystems;
 
@@ -44,6 +43,7 @@ namespace Game
 			if (Input.GetMouseButtonDown(0))
 			{
 				_ray = _camera.ScreenPointToRay(Input.mousePosition);
+
 				if (Physics.Raycast(_ray, out _hitData, 1000, _groundLayerMask))
 				{
 					_flag.position = _hitData.point;
