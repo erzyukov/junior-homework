@@ -10,9 +10,11 @@ namespace Game
 		[SerializeField] private GameObject _flagPrefab;
 		[SerializeField] private LayerMask _groundLayerMask;
 		[SerializeField] private BaseWarehouse _baseWarehouse;
+		[SerializeField] private Base _basePrefab;
 
 		private Base _base;
 		private BaseBots _baseBots;
+		private BaseSpawner _baseSpawner;
 
 		private Camera _camera;
 		private Transform _flag;
@@ -67,6 +69,11 @@ namespace Game
 			Building,
 		}
 
+		public void InitBase(BaseSpawner baseSpawner)
+		{
+			_baseSpawner = baseSpawner;
+		}
+
 		public void OnPointerClick(PointerEventData eventData)
 		{
 			if (_state != State.None)
@@ -116,9 +123,15 @@ namespace Game
 		{
 			_base.SetState(Base.State.BuildBots);
 			_state = State.Building;
-			bot.StartBuild(_flag.transform, () =>
+			bot.StartBuild(_flag, () =>
 			{
-				Debug.LogWarning("TARGET REACHED!");
+				_baseBots.RemoveBot(bot);
+				BaseFacade createdBase = _baseSpawner.SpawnBase(0, _flag.position);
+				createdBase.AddBot(bot);
+				bot.SetColor(createdBase.BaseColor);
+				bot.SetFree();
+				Destroy(_flag.gameObject);
+				_state = State.None;
 			});
 		}
 	}

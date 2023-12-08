@@ -3,10 +3,13 @@ namespace Game
 	using System;
 	using UnityEngine;
 	using UnityEngine.Events;
+	using UnityEngine.UIElements;
 
 	[RequireComponent(typeof(BotMover))]
     public class Bot : MonoBehaviour
     {
+		[SerializeField] MeshRenderer _meshRenderer;
+
 		private State _state;
 		private Transform _startPoint;
 		private BotMover _mover;
@@ -16,6 +19,7 @@ namespace Game
 		{
 			_startPoint = new GameObject("StartMark").transform;
 			_startPoint.position = transform.position;
+			_startPoint.SetParent(transform.parent);
 
 			_mover = GetComponent<BotMover>();
 			_oreContainer = GetComponent<BotOreContainer>();
@@ -58,7 +62,8 @@ namespace Game
 				return;
 
 			_state = State.Build;
-			_mover.MoveTo(target);
+			_startPoint.position = target.position;
+			_mover.MoveTo(target, targetReachedCallback);
 		}
 
 		public bool HasOre => _state == State.Return && _oreContainer.HasTarget;
@@ -74,6 +79,11 @@ namespace Game
 		{
 			_state = State.Free;
 			Freed?.Invoke(this);
+		}
+
+		public void SetColor(Color color)
+		{
+			_meshRenderer.material.color = color;
 		}
 
 		private void OnOreGatheredHandler(Ore ore)

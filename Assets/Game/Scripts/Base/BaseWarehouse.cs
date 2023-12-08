@@ -7,12 +7,13 @@ namespace Game
 	public class BaseWarehouse : MonoBehaviour
 	{
 		[SerializeField] private TextMeshProUGUI _oreCountText;
+		[SerializeField] private BaseBots _baseBots;
 
 		private int _oreCount;
 
-		private void OnTriggerEnter(Collider other)
+		private void OnTriggerStay(Collider other)
 		{
-			if (other.transform.parent.TryGetComponent<Bot>(out Bot bot) && bot.HasOre)
+			if (other.transform.parent.TryGetComponent<Bot>(out Bot bot) && _baseBots.HasBot(bot) &&  bot.HasOre)
 			{
 				Ore ore = bot.HandOverOre();
 				Destroy(ore.gameObject);

@@ -1,5 +1,6 @@
 namespace Game
 {
+	using System;
 	using System.Collections;
 	using UnityEngine;
 
@@ -10,16 +11,16 @@ namespace Game
 		private Transform _target;
 		private Coroutine _mover;
 
-		public void MoveTo(Transform target)
+		public void MoveTo(Transform target, Action TargetReached = null)
 		{
 			if (_mover != null)
 				StopCoroutine(_mover);
 			
 			_target = target;
-			_mover = StartCoroutine(StartMove());
+			_mover = StartCoroutine(StartMove(TargetReached));
 		}
 
-		private IEnumerator StartMove()
+		private IEnumerator StartMove(Action TargetReached)
 		{
 			while (transform.position != _target.position)
 			{
@@ -27,6 +28,8 @@ namespace Game
 
 				yield return null;
 			}
+
+			TargetReached?.Invoke();
 		}
 	}
 }

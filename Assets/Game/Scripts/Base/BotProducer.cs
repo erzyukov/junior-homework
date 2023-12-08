@@ -7,6 +7,7 @@ namespace Game
     public class BotProducer : MonoBehaviour
     {
 		[SerializeField] private int _botPrice;
+		[SerializeField] private int _maxCount;
 		[SerializeField] private Transform _botContainer;
 		[SerializeField] private Bot _botPrefab;
 		[SerializeField] private BaseWarehouse _baseWarehouse;
@@ -14,6 +15,7 @@ namespace Game
 		private Base _base;
 		private BaseBots _baseBots;
 		private bool _isProduceActive;
+		private Color _baseColor;
 
 		private void Awake()
 		{
@@ -30,6 +32,13 @@ namespace Game
 			_base.StateChanged -= OnBaseStateChangedHandler;
 		}
 
+		public void InitBase(int botCount, Color baseColor)
+		{
+			_baseColor = baseColor;
+			for (int i = 0; i < botCount; i++)
+				ProduceBot();
+		}
+
 		private void OnBaseStateChangedHandler(Base.State baseState)
 		{
 			_isProduceActive = baseState == Base.State.BuildBots;
@@ -37,7 +46,7 @@ namespace Game
 
 		private void OnOreDeliveredHandler()
 		{
-			if (_isProduceActive == false)
+			if (_isProduceActive == false || _baseBots.Count >= _maxCount)
 				return;
 
 			if (_baseWarehouse.TrySpentOre(_botPrice))
@@ -47,6 +56,7 @@ namespace Game
 		private void ProduceBot()
 		{
 			Bot bot = Instantiate(_botPrefab, transform.position, Quaternion.identity, _botContainer);
+			bot.SetColor(_baseColor);
 			_baseBots.AddBot(bot);
 		}
 	}

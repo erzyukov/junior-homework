@@ -6,9 +6,7 @@ namespace Game
 	[RequireComponent(typeof(BaseBots))]
     public class Base : MonoBehaviour
     {
-		[SerializeField] private float _scanInterval;
-		[SerializeField] private OreSpawner _oreSpawner;
-
+		private OreSpawner _oreSpawner;
 		private BaseBots _baseBots;
 		private State _state;
 
@@ -33,6 +31,11 @@ namespace Game
 		{
 			BuildBots,
 			BuildBase,
+		}
+
+		public void InitBase(OreSpawner oreSpawner)
+		{
+			_oreSpawner = oreSpawner;
 		}
 
 		public void SetState(State state)
