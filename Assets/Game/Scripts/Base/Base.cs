@@ -1,6 +1,7 @@
 namespace Game
 {
 	using UnityEngine;
+	using UnityEngine.Events;
 
 	[RequireComponent(typeof(BaseBots))]
     public class Base : MonoBehaviour
@@ -9,9 +10,11 @@ namespace Game
 		[SerializeField] private OreSpawner _oreSpawner;
 
 		private BaseBots _baseBots;
+		private State _state;
 
 		private void Start()
         {
+			SetState(State.BuildBots);
 			_baseBots = GetComponent<BaseBots>();
 
 			_baseBots.BotFreed += OnBotFreedHandler;
@@ -22,6 +25,20 @@ namespace Game
 		{
 			_baseBots.BotFreed -= OnBotFreedHandler;
 			_oreSpawner.Spawned -= OnOreSpawnedHandler;
+		}
+
+		public event UnityAction<State> StateChanged;
+
+		public enum State
+		{
+			BuildBots,
+			BuildBase,
+		}
+
+		public void SetState(State state)
+		{
+			_state = state;
+			StateChanged.Invoke(_state);
 		}
 
 		private void OnBotFreedHandler(Bot bot)

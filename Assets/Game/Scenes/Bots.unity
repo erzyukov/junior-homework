@@ -942,28 +942,14 @@ GameObject:
   - component: {fileID: 1485225342}
   - component: {fileID: 1485225341}
   - component: {fileID: 1485225340}
-  - component: {fileID: 1485225339}
-  m_Layer: 0
+  - component: {fileID: 1485225343}
+  m_Layer: 3
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &1485225339
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1485225338}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1485225340
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1029,6 +1015,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1485225343
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485225338}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.845146, y: 2.220446e-16, z: 8.001971}
+  m_Center: {x: 0.056121826, y: 0, z: -0.011368561}
 --- !u!1 &1631349946
 GameObject:
   m_ObjectHideFlags: 0
@@ -1235,6 +1234,7 @@ GameObject:
   - component: {fileID: 1800950410}
   - component: {fileID: 1800950409}
   - component: {fileID: 1800950411}
+  - component: {fileID: 1800950412}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -1302,6 +1302,22 @@ MonoBehaviour:
   _botContainer: {fileID: 559473927}
   _botPrefab: {fileID: 8606954832124916866, guid: e0c44c2b40c44174eb2c626cc9d45d96, type: 3}
   _baseWarehouse: {fileID: 1631349951}
+--- !u!114 &1800950412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800950407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ed1063168705e4c8eafa46af53a666, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _flagPrefab: {fileID: 7545757026582213099, guid: 8687d120d1dd8094484a2240632a16c5, type: 3}
+  _groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1001 &7232736619805377290
 PrefabInstance:
   m_ObjectHideFlags: 0

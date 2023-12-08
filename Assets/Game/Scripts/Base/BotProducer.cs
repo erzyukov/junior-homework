@@ -1,5 +1,6 @@
 namespace Game
 {
+	using System;
 	using UnityEngine;
 
 	[RequireComponent(typeof(BaseBots))]
@@ -10,19 +11,28 @@ namespace Game
 		[SerializeField] private Bot _botPrefab;
 		[SerializeField] private BaseWarehouse _baseWarehouse;
 
+		private Base _base;
 		private BaseBots _baseBots;
 		private bool _isProduceActive;
 
 		private void Awake()
 		{
 			_baseBots = GetComponent<BaseBots>();
+			_base = GetComponent<Base>();
 			_baseWarehouse.OreDelivered += OnOreDeliveredHandler;
-			_isProduceActive = true;
+
+			_base.StateChanged += OnBaseStateChangedHandler;
 		}
 
 		private void OnDestroy()
 		{
 			_baseWarehouse.OreDelivered -= OnOreDeliveredHandler;
+			_base.StateChanged -= OnBaseStateChangedHandler;
+		}
+
+		private void OnBaseStateChangedHandler(Base.State baseState)
+		{
+			_isProduceActive = baseState == Base.State.BuildBots;
 		}
 
 		private void OnOreDeliveredHandler()
