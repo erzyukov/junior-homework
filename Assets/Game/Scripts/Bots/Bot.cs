@@ -1,5 +1,6 @@
 namespace Game
 {
+	using System;
 	using UnityEngine;
 	using UnityEngine.Events;
 
@@ -35,16 +36,29 @@ namespace Game
 		{
 			Free,
 			Gather,
-			Return
+			Return,
+			Build,
 		}
 
 		public bool IsFree => _state == State.Free;
 
 		public void StartGather(Ore ore)
 		{
+			if (_state != State.Free)
+				return;
+
 			_state = State.Gather;
 			_oreContainer.SetTraget(ore);
 			_mover.MoveTo(ore.transform);
+		}
+
+		public void StartBuild(Transform target, Action targetReachedCallback)
+		{
+			if (_state != State.Free)
+				return;
+
+			_state = State.Build;
+			_mover.MoveTo(target);
 		}
 
 		public bool HasOre => _state == State.Return && _oreContainer.HasTarget;

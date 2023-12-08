@@ -6,14 +6,16 @@ namespace Game
 
     public class BaseExpander : MonoBehaviour, IPointerClickHandler
 	{
+		[SerializeField] private int _basePrice;
 		[SerializeField] private GameObject _flagPrefab;
 		[SerializeField] private LayerMask _groundLayerMask;
+		[SerializeField] private BaseWarehouse _baseWarehouse;
 
 		private Base _base;
+		private BaseBots _baseBots;
 
 		private Camera _camera;
 		private Transform _flag;
-		private Vector3 _buildTargetPosition;
 		private State _state;
 
 		private Ray _ray;
@@ -22,6 +24,9 @@ namespace Game
 		private void Awake()
 		{
 			_base = GetComponent<Base>();
+			_baseBots = GetComponent<BaseBots>();
+			_baseWarehouse.OreDelivered += OnOreDeliveredHandler;
+			_baseBots.BotFreed += OnBotFreedHandler;
 		}
 
 		private void Start()
@@ -39,8 +44,7 @@ namespace Game
 				_ray = _camera.ScreenPointToRay(Input.mousePosition);
 				if (Physics.Raycast(_ray, out _hitData, 1000, _groundLayerMask))
 				{
-					_buildTargetPosition = _hitData.point;
-					_flag.position = _buildTargetPosition;
+					_flag.position = _hitData.point;
 
 					if (_state == State.Initiated)
 						StartBuildProcess();
@@ -48,10 +52,19 @@ namespace Game
 			}
 		}
 
-		private void StartBuildProcess()
+		private void OnDestroy()
 		{
-			_base.SetState(Base.State.BuildBase);
-			_state = State.TargetPlaced;
+			_baseWarehouse.OreDelivered -= OnOreDeliveredHandler;
+			_baseBots.BotFreed -= OnBotFreedHandler;
+		}
+
+		public enum State
+		{
+			None,
+			Initiated,
+			TargetPlaced,
+			WaitForResources,
+			Building,
 		}
 
 		public void OnPointerClick(PointerEventData eventData)
@@ -63,13 +76,50 @@ namespace Game
 			_state = State.Initiated;
 		}
 
-		public enum State
+		private void StartBuildProcess()
 		{
-			None,
-			Initiated,
-			TargetPlaced,
-			WaitFreeBot,
-			Building,
+			_base.SetState(Base.State.BuildBase);
+			_state = State.TargetPlaced;
+
+			TryBuild();
 		}
-    }
+
+		private void OnOreDeliveredHandler()
+		{
+			if (_state != State.TargetPlaced)
+				return;
+
+			TryBuild();
+		}
+
+		private void OnBotFreedHandler(Bot bot)
+		{
+			if (_state != State.TargetPlaced)
+				return;
+
+			if (_baseWarehouse.TrySpentOre(_basePrice))
+				BuildBase(bot);
+		}
+
+		private void TryBuild()
+		{
+			if (_baseBots.HasFreeBots == false)
+				return;
+
+			Bot bot = _baseBots.GetFreeBot();
+
+			if (_baseWarehouse.TrySpentOre(_basePrice))
+				BuildBase(bot);
+		}
+
+		private void BuildBase(Bot bot)
+		{
+			_base.SetState(Base.State.BuildBots);
+			_state = State.Building;
+			bot.StartBuild(_flag.transform, () =>
+			{
+				Debug.LogWarning("TARGET REACHED!");
+			});
+		}
+	}
 }

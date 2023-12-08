@@ -1314,10 +1314,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4ed1063168705e4c8eafa46af53a666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _basePrice: 5
   _flagPrefab: {fileID: 7545757026582213099, guid: 8687d120d1dd8094484a2240632a16c5, type: 3}
   _groundLayerMask:
     serializedVersion: 2
     m_Bits: 8
+  _baseWarehouse: {fileID: 1631349951}
 --- !u!1001 &7232736619805377290
 PrefabInstance:
   m_ObjectHideFlags: 0
