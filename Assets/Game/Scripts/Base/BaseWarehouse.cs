@@ -2,9 +2,10 @@ namespace Game
 {
 	using UnityEngine;
 	using TMPro;
+	using UnityEngine.Events;
 
-    public class BaseWarehouse : MonoBehaviour
-    {
+	public class BaseWarehouse : MonoBehaviour
+	{
 		[SerializeField] private TextMeshProUGUI _oreCountText;
 
 		private int _oreCount;
@@ -17,10 +18,31 @@ namespace Game
 				Destroy(ore.gameObject);
 
 				_oreCount++;
-				_oreCountText.text = _oreCount.ToString();
-				
+				UpdateUi();
+
+				OreDelivered.Invoke();
+
 				bot.SetFree();
 			}
+		}
+
+		public event UnityAction OreDelivered;
+
+		public int OreCount => _oreCount;
+
+		public bool TrySpentOre(int amount)
+		{
+			if (_oreCount < amount)
+				return false;
+
+			_oreCount -= amount;
+			UpdateUi();
+			return true;
+		}
+
+		public void UpdateUi()
+		{
+			_oreCountText.text = _oreCount.ToString();
 		}
 	}
 }

@@ -867,7 +867,7 @@ PrefabInstance:
     - target: {fileID: 6492964792748611802, guid: e0c44c2b40c44174eb2c626cc9d45d96, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0a5cc45a17e368b42bbc6f52b4c7d33d, type: 2}
+      objectReference: {fileID: 2100000, guid: 83b2439492a2f114689f29b5f4379eb9, type: 2}
     - target: {fileID: 7232736620886252644, guid: e0c44c2b40c44174eb2c626cc9d45d96, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1234,6 +1234,7 @@ GameObject:
   - component: {fileID: 1800950408}
   - component: {fileID: 1800950410}
   - component: {fileID: 1800950409}
+  - component: {fileID: 1800950411}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -1285,6 +1286,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scanInterval: 2
   _oreSpawner: {fileID: 306549472}
+--- !u!114 &1800950411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800950407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d91e47161b96e49b2d6fc249281872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _botPrice: 3
+  _botContainer: {fileID: 559473927}
+  _botPrefab: {fileID: 8606954832124916866, guid: e0c44c2b40c44174eb2c626cc9d45d96, type: 3}
+  _baseWarehouse: {fileID: 1631349951}
 --- !u!1001 &7232736619805377290
 PrefabInstance:
   m_ObjectHideFlags: 0
