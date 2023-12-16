@@ -12,28 +12,9 @@ namespace Game
         private const string StartMark = "StartMark";
 
         private State _state;
-        private Transform _startPoint;
+        private Vector3 _startPosition;
         private BotMover _mover;
         private BotOreContainer _oreContainer;
-
-        private void Start()
-        {
-            _startPoint = new GameObject(StartMark).transform;
-            _startPoint.position = transform.position;
-            _startPoint.SetParent(transform.parent);
-
-            _mover = GetComponent<BotMover>();
-            _oreContainer = GetComponent<BotOreContainer>();
-
-            _oreContainer.OreGathered += OnOreGatheredHandler;
-
-            Freed?.Invoke(this);
-        }
-
-        private void OnDestroy()
-        {
-            _oreContainer.OreGathered -= OnOreGatheredHandler;
-        }
 
         public event UnityAction<Bot> Freed;
 
@@ -47,6 +28,31 @@ namespace Game
 
         public bool IsFree => _state == State.Free;
 
+        public bool HasOre => _state == State.Return && _oreContainer.HasTarget;
+
+        private void Awake()
+        {
+            _oreContainer = GetComponent<BotOreContainer>();
+        }
+
+        private void OnEnable()
+        {
+            _oreContainer.OreGathered += OnOreGathered;
+        }
+
+        private void Start()
+        {
+            _startPosition = transform.position;
+            _mover = GetComponent<BotMover>();
+
+            Freed?.Invoke(this);
+        }
+
+        private void OnDisable()
+        {
+            _oreContainer.OreGathered -= OnOreGathered;
+        }
+
         public void StartGather(Ore ore)
         {
             if (_state != State.Free)
@@ -54,7 +60,7 @@ namespace Game
 
             _state = State.Gather;
             _oreContainer.SetTraget(ore);
-            _mover.MoveTo(ore.transform);
+            _mover.MoveTo(ore.transform.position);
         }
 
         public void StartBuild(Transform target, Action targetReachedCallback)
@@ -63,11 +69,9 @@ namespace Game
                 return;
 
             _state = State.Build;
-            _startPoint.position = target.position;
-            _mover.MoveTo(target, targetReachedCallback);
+            _startPosition = target.position;
+            _mover.MoveTo(_startPosition, targetReachedCallback);
         }
-
-        public bool HasOre => _state == State.Return && _oreContainer.HasTarget;
 
         public Ore HandOverOre()
         {
@@ -88,10 +92,10 @@ namespace Game
             _meshRenderer.material.color = color;
         }
 
-        private void OnOreGatheredHandler(Ore ore)
+        private void OnOreGathered(Ore ore)
         {
             _state = State.Return;
-            _mover.MoveTo(_startPoint);
+            _mover.MoveTo(_startPosition);
         }
     }
 }

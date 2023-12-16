@@ -9,15 +9,15 @@ namespace Game
 
         private Ore _target;
 
+        public event UnityAction<Ore> OreGathered;
+
+        public bool HasTarget => _target != null;
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.transform.parent.TryGetComponent<Ore>(out Ore ore) && ore == _target)
                 TakeOre(ore);
         }
-
-        public event UnityAction<Ore> OreGathered;
-
-        public bool HasTarget => _target != null;
 
         public Ore HandOverOre()
         {

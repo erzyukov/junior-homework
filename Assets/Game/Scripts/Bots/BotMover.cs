@@ -8,23 +8,21 @@ namespace Game
     {
         [SerializeField] private float _speed;
 
-        private Transform _target;
         private Coroutine _mover;
 
-        public void MoveTo(Transform target, Action TargetReached = null)
+        public void MoveTo(Vector3 target, Action TargetReached = null)
         {
             if (_mover != null)
                 StopCoroutine(_mover);
 
-            _target = target;
-            _mover = StartCoroutine(StartMove(TargetReached));
+            _mover = StartCoroutine(StartMove(target, TargetReached));
         }
 
-        private IEnumerator StartMove(Action TargetReached)
+        private IEnumerator StartMove(Vector3 target, Action TargetReached)
         {
-            while (transform.position != _target.position)
+            while (transform.position != target)
             {
-                transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, target, _speed * Time.deltaTime);
 
                 yield return null;
             }
