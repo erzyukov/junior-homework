@@ -20,15 +20,18 @@ namespace Game
         {
             _baseBots = GetComponent<BaseBots>();
             _base = GetComponent<Base>();
-            _baseWarehouse.OreDelivered += OnOreDeliveredHandler;
-
-            _base.StateChanged += OnBaseStateChangedHandler;
         }
 
-        private void OnDestroy()
+        private void OnEnable()
         {
-            _baseWarehouse.OreDelivered -= OnOreDeliveredHandler;
-            _base.StateChanged -= OnBaseStateChangedHandler;
+            _baseWarehouse.OreDelivered += OnOreDelivered;
+            _base.StateChanged += OnBaseStateChanged;
+        }
+
+        private void OnDisable()
+        {
+            _baseWarehouse.OreDelivered -= OnOreDelivered;
+            _base.StateChanged -= OnBaseStateChanged;
         }
 
         public void InitBase(int botCount, Color baseColor)
@@ -39,12 +42,12 @@ namespace Game
                 ProduceBot();
         }
 
-        private void OnBaseStateChangedHandler(Base.State baseState)
+        private void OnBaseStateChanged(Base.State baseState)
         {
             _isProduceActive = baseState == Base.State.BuildBots;
         }
 
-        private void OnOreDeliveredHandler()
+        private void OnOreDelivered()
         {
             if (_isProduceActive == false || _baseBots.Count >= _maxCount)
                 return;

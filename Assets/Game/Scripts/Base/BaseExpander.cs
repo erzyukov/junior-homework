@@ -23,12 +23,25 @@ namespace Game
         private Ray _ray;
         private RaycastHit _hitData;
 
+        public enum State
+        {
+            None,
+            Initiated,
+            TargetPlaced,
+            WaitForResources,
+            Building,
+        }
+
         private void Awake()
         {
             _base = GetComponent<Base>();
             _baseBots = GetComponent<BaseBots>();
-            _baseWarehouse.OreDelivered += OnOreDeliveredHandler;
-            _baseBots.BotFreed += OnBotFreedHandler;
+        }
+
+        private void OnEnable()
+        {
+            _baseWarehouse.OreDelivered += OnOreDelivered;
+            _baseBots.BotFreed += OnBotFreed;
         }
 
         private void Start()
@@ -55,19 +68,10 @@ namespace Game
             }
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
-            _baseWarehouse.OreDelivered -= OnOreDeliveredHandler;
-            _baseBots.BotFreed -= OnBotFreedHandler;
-        }
-
-        public enum State
-        {
-            None,
-            Initiated,
-            TargetPlaced,
-            WaitForResources,
-            Building,
+            _baseWarehouse.OreDelivered -= OnOreDelivered;
+            _baseBots.BotFreed -= OnBotFreed;
         }
 
         public void InitBase(BaseSpawner baseSpawner)
@@ -92,7 +96,7 @@ namespace Game
             TryBuild();
         }
 
-        private void OnOreDeliveredHandler()
+        private void OnOreDelivered()
         {
             if (_state != State.TargetPlaced)
                 return;
@@ -100,7 +104,7 @@ namespace Game
             TryBuild();
         }
 
-        private void OnBotFreedHandler(Bot bot)
+        private void OnBotFreed(Bot bot)
         {
             if (_state != State.TargetPlaced)
                 return;
