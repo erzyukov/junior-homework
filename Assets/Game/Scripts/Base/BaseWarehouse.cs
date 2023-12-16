@@ -1,48 +1,48 @@
 namespace Game
 {
-	using UnityEngine;
-	using TMPro;
-	using UnityEngine.Events;
+    using UnityEngine;
+    using TMPro;
+    using UnityEngine.Events;
 
-	public class BaseWarehouse : MonoBehaviour
-	{
-		[SerializeField] private TextMeshProUGUI _oreCountText;
-		[SerializeField] private BaseBots _baseBots;
+    public class BaseWarehouse : MonoBehaviour
+    {
+        [SerializeField] private TextMeshProUGUI _oreCountText;
+        [SerializeField] private BaseBots _baseBots;
 
-		private int _oreCount;
+        private int _oreCount;
 
-		private void OnTriggerStay(Collider other)
-		{
-			if (other.transform.parent.TryGetComponent<Bot>(out Bot bot) && _baseBots.HasBot(bot) &&  bot.HasOre)
-			{
-				Ore ore = bot.HandOverOre();
-				Destroy(ore.gameObject);
+        private void OnTriggerStay(Collider other)
+        {
+            if (other.transform.parent.TryGetComponent<Bot>(out Bot bot) && _baseBots.HasBot(bot) && bot.HasOre)
+            {
+                Ore ore = bot.HandOverOre();
+                Destroy(ore.gameObject);
 
-				_oreCount++;
-				UpdateUi();
+                _oreCount++;
+                UpdateUi();
 
-				OreDelivered.Invoke();
+                OreDelivered.Invoke();
 
-				bot.SetFree();
-			}
-		}
+                bot.SetFree();
+            }
+        }
 
-		public event UnityAction OreDelivered;
+        public event UnityAction OreDelivered;
 
-		public int OreCount => _oreCount;
+        public int OreCount => _oreCount;
 
-		public bool TrySpentOre(int amount)
-		{
-			if (_oreCount < amount)
-				return false;
+        public bool TrySpentOre(int amount)
+        {
+            if (_oreCount < amount)
+                return false;
 
-			_oreCount -= amount;
-			UpdateUi();
+            _oreCount -= amount;
+            UpdateUi();
 
-			return true;
-		}
+            return true;
+        }
 
-		public void UpdateUi() =>
-			_oreCountText.text = _oreCount.ToString();
-	}
+        public void UpdateUi() =>
+            _oreCountText.text = _oreCount.ToString();
+    }
 }

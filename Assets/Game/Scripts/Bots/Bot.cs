@@ -1,95 +1,97 @@
 namespace Game
 {
-	using System;
-	using UnityEngine;
-	using UnityEngine.Events;
+    using System;
+    using UnityEngine;
+    using UnityEngine.Events;
 
-	[RequireComponent(typeof(BotMover))]
+    [RequireComponent(typeof(BotMover), typeof(BotOreContainer))]
     public class Bot : MonoBehaviour
     {
-		[SerializeField] MeshRenderer _meshRenderer;
+        [SerializeField] MeshRenderer _meshRenderer;
 
-		private State _state;
-		private Transform _startPoint;
-		private BotMover _mover;
-		private BotOreContainer _oreContainer;
+        private const string StartMark = "StartMark";
 
-		private void Start()
-		{
-			_startPoint = new GameObject("StartMark").transform;
-			_startPoint.position = transform.position;
-			_startPoint.SetParent(transform.parent);
+        private State _state;
+        private Transform _startPoint;
+        private BotMover _mover;
+        private BotOreContainer _oreContainer;
 
-			_mover = GetComponent<BotMover>();
-			_oreContainer = GetComponent<BotOreContainer>();
+        private void Start()
+        {
+            _startPoint = new GameObject(StartMark).transform;
+            _startPoint.position = transform.position;
+            _startPoint.SetParent(transform.parent);
 
-			_oreContainer.OreGathered += OnOreGatheredHandler;
+            _mover = GetComponent<BotMover>();
+            _oreContainer = GetComponent<BotOreContainer>();
 
-			Freed?.Invoke(this);
-		}
+            _oreContainer.OreGathered += OnOreGatheredHandler;
 
-		private void OnDestroy()
-		{
-			_oreContainer.OreGathered -= OnOreGatheredHandler;
-		}
+            Freed?.Invoke(this);
+        }
 
-		public event UnityAction<Bot> Freed;
+        private void OnDestroy()
+        {
+            _oreContainer.OreGathered -= OnOreGatheredHandler;
+        }
 
-		public enum State
-		{
-			Free,
-			Gather,
-			Return,
-			Build,
-		}
+        public event UnityAction<Bot> Freed;
 
-		public bool IsFree => _state == State.Free;
+        public enum State
+        {
+            Free,
+            Gather,
+            Return,
+            Build,
+        }
 
-		public void StartGather(Ore ore)
-		{
-			if (_state != State.Free)
-				return;
+        public bool IsFree => _state == State.Free;
 
-			_state = State.Gather;
-			_oreContainer.SetTraget(ore);
-			_mover.MoveTo(ore.transform);
-		}
+        public void StartGather(Ore ore)
+        {
+            if (_state != State.Free)
+                return;
 
-		public void StartBuild(Transform target, Action targetReachedCallback)
-		{
-			if (_state != State.Free)
-				return;
+            _state = State.Gather;
+            _oreContainer.SetTraget(ore);
+            _mover.MoveTo(ore.transform);
+        }
 
-			_state = State.Build;
-			_startPoint.position = target.position;
-			_mover.MoveTo(target, targetReachedCallback);
-		}
+        public void StartBuild(Transform target, Action targetReachedCallback)
+        {
+            if (_state != State.Free)
+                return;
 
-		public bool HasOre => _state == State.Return && _oreContainer.HasTarget;
+            _state = State.Build;
+            _startPoint.position = target.position;
+            _mover.MoveTo(target, targetReachedCallback);
+        }
 
-		public Ore HandOverOre()
-		{
-			Ore ore = _oreContainer.HandOverOre();
-			ore.transform.SetParent(null);
+        public bool HasOre => _state == State.Return && _oreContainer.HasTarget;
 
-			return ore;
-		}
+        public Ore HandOverOre()
+        {
+            Ore ore = _oreContainer.HandOverOre();
+            ore.transform.SetParent(null);
 
-		public void SetFree()
-		{
-			_state = State.Free;
-			Freed?.Invoke(this);
-		}
+            return ore;
+        }
 
-		public void SetColor(Color color)
-		{
-			_meshRenderer.material.color = color;
-		}
+        public void SetFree()
+        {
+            _state = State.Free;
+            Freed?.Invoke(this);
+        }
 
-		private void OnOreGatheredHandler(Ore ore)
-		{
-			_state = State.Return;
-			_mover.MoveTo(_startPoint);
-		}
-	}
+        public void SetColor(Color color)
+        {
+            _meshRenderer.material.color = color;
+        }
+
+        private void OnOreGatheredHandler(Ore ore)
+        {
+            _state = State.Return;
+            _mover.MoveTo(_startPoint);
+        }
+    }
 }

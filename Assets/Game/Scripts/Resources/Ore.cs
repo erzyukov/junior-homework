@@ -1,6 +1,6 @@
 namespace Game
 {
-	using UnityEngine;
+    using UnityEngine;
 
-	public class Ore : MonoBehaviour { }
+    public class Ore : MonoBehaviour { }
 }

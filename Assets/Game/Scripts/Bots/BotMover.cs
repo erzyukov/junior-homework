@@ -1,35 +1,35 @@
 namespace Game
 {
-	using System;
-	using System.Collections;
-	using UnityEngine;
+    using System;
+    using System.Collections;
+    using UnityEngine;
 
     public class BotMover : MonoBehaviour
     {
-		[SerializeField] private float _speed;
+        [SerializeField] private float _speed;
 
-		private Transform _target;
-		private Coroutine _mover;
+        private Transform _target;
+        private Coroutine _mover;
 
-		public void MoveTo(Transform target, Action TargetReached = null)
-		{
-			if (_mover != null)
-				StopCoroutine(_mover);
-			
-			_target = target;
-			_mover = StartCoroutine(StartMove(TargetReached));
-		}
+        public void MoveTo(Transform target, Action TargetReached = null)
+        {
+            if (_mover != null)
+                StopCoroutine(_mover);
 
-		private IEnumerator StartMove(Action TargetReached)
-		{
-			while (transform.position != _target.position)
-			{
-				transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
+            _target = target;
+            _mover = StartCoroutine(StartMove(TargetReached));
+        }
 
-				yield return null;
-			}
+        private IEnumerator StartMove(Action TargetReached)
+        {
+            while (transform.position != _target.position)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
 
-			TargetReached?.Invoke();
-		}
-	}
+                yield return null;
+            }
+
+            TargetReached?.Invoke();
+        }
+    }
 }

@@ -1,65 +1,65 @@
 namespace Game
 {
-	using UnityEngine;
-	using UnityEngine.Events;
+    using UnityEngine;
+    using UnityEngine.Events;
 
-	[RequireComponent(typeof(BaseBots))]
+    [RequireComponent(typeof(BaseBots))]
     public class Base : MonoBehaviour
     {
-		private OreSpawner _oreSpawner;
-		private BaseBots _baseBots;
-		private State _state;
+        private OreSpawner _oreSpawner;
+        private BaseBots _baseBots;
+        private State _state;
 
-		private void Start()
+        private void Start()
         {
-			SetState(State.BuildBots);
-			_baseBots = GetComponent<BaseBots>();
+            SetState(State.BuildBots);
+            _baseBots = GetComponent<BaseBots>();
 
-			_baseBots.BotFreed += OnBotFreedHandler;
-			_oreSpawner.Spawned += OnOreSpawnedHandler;
-		}
+            _baseBots.BotFreed += OnBotFreedHandler;
+            _oreSpawner.Spawned += OnOreSpawnedHandler;
+        }
 
-		private void OnDestroy()
-		{
-			_baseBots.BotFreed -= OnBotFreedHandler;
-			_oreSpawner.Spawned -= OnOreSpawnedHandler;
-		}
+        private void OnDestroy()
+        {
+            _baseBots.BotFreed -= OnBotFreedHandler;
+            _oreSpawner.Spawned -= OnOreSpawnedHandler;
+        }
 
-		public event UnityAction<State> StateChanged;
+        public event UnityAction<State> StateChanged;
 
-		public enum State
-		{
-			BuildBots,
-			BuildBase,
-		}
+        public enum State
+        {
+            BuildBots,
+            BuildBase,
+        }
 
-		public void InitBase(OreSpawner oreSpawner)
-		{
-			_oreSpawner = oreSpawner;
-		}
+        public void InitBase(OreSpawner oreSpawner)
+        {
+            _oreSpawner = oreSpawner;
+        }
 
-		public void SetState(State state)
-		{
-			_state = state;
-			StateChanged.Invoke(_state);
-		}
+        public void SetState(State state)
+        {
+            _state = state;
+            StateChanged.Invoke(_state);
+        }
 
-		private void OnBotFreedHandler(Bot bot)
-		{
-			if (_oreSpawner.TryGetOre(out Ore ore))
-				bot.StartGather(ore);
-		}
+        private void OnBotFreedHandler(Bot bot)
+        {
+            if (_oreSpawner.TryGetOre(out Ore ore))
+                bot.StartGather(ore);
+        }
 
-		private void OnOreSpawnedHandler()
-		{
-			if (_baseBots.HasFreeBots == false)
-				return;
+        private void OnOreSpawnedHandler()
+        {
+            if (_baseBots.HasFreeBots == false)
+                return;
 
-			if (_oreSpawner.TryGetOre(out Ore ore))
-			{
-				Bot bot = _baseBots.GetFreeBot();
-				bot.StartGather(ore);
-			}
-		}
-	}
+            if (_oreSpawner.TryGetOre(out Ore ore))
+            {
+                Bot bot = _baseBots.GetFreeBot();
+                bot.StartGather(ore);
+            }
+        }
+    }
 }

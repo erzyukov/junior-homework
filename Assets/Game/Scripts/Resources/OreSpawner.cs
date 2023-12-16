@@ -1,66 +1,66 @@
 namespace Game
 {
-	using System.Collections;
-	using System.Collections.Generic;
-	using UnityEngine;
-	using UnityEngine.Events;
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+    using UnityEngine.Events;
 
-	[RequireComponent(typeof(BoxCollider))]
+    [RequireComponent(typeof(BoxCollider))]
     public class OreSpawner : MonoBehaviour
     {
-		[SerializeField] private Ore _orePrefab;
-		[SerializeField] private float _spawnSecondsDelay;
-		[SerializeField] private int _maxOreOnField;
+        [SerializeField] private Ore _orePrefab;
+        [SerializeField] private float _spawnSecondsDelay;
+        [SerializeField] private int _maxOreOnField;
 
-		private Queue<Ore> _ores;
-		private Bounds _bounds;
+        private Queue<Ore> _ores;
+        private Bounds _bounds;
 
-		private void Start()
-		{
-			_ores = new Queue<Ore>();
-			_bounds = GetComponent<BoxCollider>().bounds;
-			StartCoroutine(SpawnOre());
-		}
+        private void Start()
+        {
+            _ores = new Queue<Ore>();
+            _bounds = GetComponent<BoxCollider>().bounds;
+            StartCoroutine(SpawnOre());
+        }
 
-		public event UnityAction Spawned;
-		
-		public bool TryGetOre(out Ore ore)
-		{
-			ore = null;
+        public event UnityAction Spawned;
 
-			if (_ores.Count == 0)
-				return false;
+        public bool TryGetOre(out Ore ore)
+        {
+            ore = null;
 
-			ore = _ores.Dequeue();
+            if (_ores.Count == 0)
+                return false;
 
-			return true;
-		}
+            ore = _ores.Dequeue();
 
-		private IEnumerator SpawnOre()
-		{
-			WaitForSeconds waitForSeconds = new WaitForSeconds(_spawnSecondsDelay);
+            return true;
+        }
 
-			while (Application.isPlaying)
-			{
-				yield return new WaitUntil(() => _ores.Count < _maxOreOnField);
-				yield return waitForSeconds;
+        private IEnumerator SpawnOre()
+        {
+            WaitForSeconds waitForSeconds = new WaitForSeconds(_spawnSecondsDelay);
 
-				Vector3 position = GetRandomPosition();
-				Ore ore = Instantiate(_orePrefab, position, Quaternion.identity, transform);
-				_ores.Enqueue(ore);
-				Spawned?.Invoke();
-			}
-		}
+            while (Application.isPlaying)
+            {
+                yield return new WaitUntil(() => _ores.Count < _maxOreOnField);
+                yield return waitForSeconds;
 
-		private Vector3 GetRandomPosition()
-		{
-			var randomPositionInside = new Vector3(
-				UnityEngine.Random.Range(_bounds.min.x, _bounds.max.x),
-				0,
-				UnityEngine.Random.Range(_bounds.min.z, _bounds.max.z)
-			);
+                Vector3 position = GetRandomPosition();
+                Ore ore = Instantiate(_orePrefab, position, Quaternion.identity, transform);
+                _ores.Enqueue(ore);
+                Spawned?.Invoke();
+            }
+        }
 
-			return _bounds.ClosestPoint(randomPositionInside);
-		}
-	}
+        private Vector3 GetRandomPosition()
+        {
+            var randomPositionInside = new Vector3(
+                UnityEngine.Random.Range(_bounds.min.x, _bounds.max.x),
+                0,
+                UnityEngine.Random.Range(_bounds.min.z, _bounds.max.z)
+            );
+
+            return _bounds.ClosestPoint(randomPositionInside);
+        }
+    }
 }
