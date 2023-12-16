@@ -15,14 +15,14 @@ namespace Game
         private Queue<Ore> _ores;
         private Bounds _bounds;
 
-        public event UnityAction Spawned;
-
         private void Start()
         {
             _ores = new Queue<Ore>();
             _bounds = GetComponent<BoxCollider>().bounds;
             StartCoroutine(SpawnOre());
         }
+
+        public event UnityAction Spawned;
 
         public bool TryGetOre(out Ore ore)
         {

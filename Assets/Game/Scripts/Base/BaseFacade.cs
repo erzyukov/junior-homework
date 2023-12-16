@@ -12,8 +12,6 @@ namespace Game
         private BaseBots _baseBots;
         private Color _baseColor;
 
-        public Color BaseColor => _baseColor;
-
         private void Awake()
         {
             _base = GetComponent<Base>();
@@ -22,6 +20,8 @@ namespace Game
             _baseBots = GetComponent<BaseBots>();
             _baseColor = Random.ColorHSV();
         }
+
+        public Color BaseColor => _baseColor;
 
         public void InitBase(OreSpawner oreSpawner, int startBotCount, BaseSpawner baseSpawner)
         {

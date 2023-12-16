@@ -9,10 +9,10 @@ namespace Game
     {
         private List<Bot> _bots = new List<Bot>();
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             for (int i = 0; i < _bots.Count; i++)
-                _bots[i].Freed -= OnBotFreed;
+                _bots[i].Freed -= OnBotFreedHandler;
         }
 
         public event UnityAction<Bot> BotFreed;
@@ -30,17 +30,17 @@ namespace Game
 
         public void AddBot(Bot bot)
         {
-            bot.Freed += OnBotFreed;
+            bot.Freed += OnBotFreedHandler;
             _bots.Add(bot);
         }
 
         public void RemoveBot(Bot bot)
         {
-            bot.Freed -= OnBotFreed;
+            bot.Freed -= OnBotFreedHandler;
             _bots.Remove(bot);
         }
 
-        private void OnBotFreed(Bot bot) =>
+        private void OnBotFreedHandler(Bot bot) =>
             BotFreed.Invoke(bot);
     }
 }

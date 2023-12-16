@@ -10,31 +10,27 @@ namespace Game
         private BaseBots _baseBots;
         private State _state;
 
+        private void Start()
+        {
+            SetState(State.BuildBots);
+            _baseBots = GetComponent<BaseBots>();
+
+            _baseBots.BotFreed += OnBotFreedHandler;
+            _oreSpawner.Spawned += OnOreSpawnedHandler;
+        }
+
+        private void OnDestroy()
+        {
+            _baseBots.BotFreed -= OnBotFreedHandler;
+            _oreSpawner.Spawned -= OnOreSpawnedHandler;
+        }
+
         public event UnityAction<State> StateChanged;
 
         public enum State
         {
             BuildBots,
             BuildBase,
-        }
-
-        private void Start()
-        {
-            SetState(State.BuildBots);
-            _baseBots = GetComponent<BaseBots>();
-
-        }
-
-        private void OnEnable()
-        {
-            _baseBots.BotFreed += OnBotFreed;
-            _oreSpawner.Spawned += OnOreSpawned;
-        }
-
-        private void OnDisable()
-        {
-            _baseBots.BotFreed -= OnBotFreed;
-            _oreSpawner.Spawned -= OnOreSpawned;
         }
 
         public void InitBase(OreSpawner oreSpawner)
@@ -48,13 +44,13 @@ namespace Game
             StateChanged.Invoke(_state);
         }
 
-        private void OnBotFreed(Bot bot)
+        private void OnBotFreedHandler(Bot bot)
         {
             if (_oreSpawner.TryGetOre(out Ore ore))
                 bot.StartGather(ore);
         }
 
-        private void OnOreSpawned()
+        private void OnOreSpawnedHandler()
         {
             if (_baseBots.HasFreeBots == false)
                 return;

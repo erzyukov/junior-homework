@@ -11,11 +11,6 @@ namespace Game
 
         private int _oreCount;
 
-        public event UnityAction OreDelivered;
-
-        public int OreCount => _oreCount;
-
-
         private void OnTriggerStay(Collider other)
         {
             if (other.transform.parent.TryGetComponent<Bot>(out Bot bot) && _baseBots.HasBot(bot) && bot.HasOre)
@@ -31,6 +26,10 @@ namespace Game
                 bot.SetFree();
             }
         }
+
+        public event UnityAction OreDelivered;
+
+        public int OreCount => _oreCount;
 
         public bool TrySpentOre(int amount)
         {
